@@ -63,13 +63,29 @@ main(int argc, char** argv) {
 
         om.credits("libcli++ TEST");
         om.usage("test [options]");
-        om.option("help").exclusive().description("Muestra esta pantalla de ayuda.");
-        om.option("input-file").alias("i").multiple().required().argumentRequired().description("Archivo de entrada.");
-        om.option("print-name").alias("n").argument().description("Imprime el nombre (se puede especificar).");
-        om.option("a").description("Hace la cosa A.").argument().typeInteger();
-        om.option("b").description("Hace la cosa B.");
-        om.option("c").description("Hace la cosa C.");
-        om.option("verbose").alias("v").multiple().description("Muestra más información en pantalla (se puede especificar varias veces).");
+        om.option("help")
+        	.exclusive()
+        	.description("Muestra esta pantalla de ayuda.");
+        om.option("input-file")
+        	.alias("i")
+        	.multiple()
+        	.required()
+        	.argumentRequired()
+        	.description("Archivo de entrada.");
+        om.option("print-name")
+        	.alias("n")
+        	.argument()
+        	.description("Imprime el nombre (se puede especificar).");
+        om.option("a", 'a')
+        	.description("Hace la cosa A.").argument().typeInteger();
+        om.option("b", 'b')
+        	.description("Hace la cosa B.");
+        om.option("c", 'c')
+        	.description("Hace la cosa C.");
+        om.option("verbose")
+        	.alias("v")
+        	.multiple()
+        	.description("Muestra más información en pantalla (se puede especificar varias veces).");
         
         try {
         
@@ -85,6 +101,9 @@ main(int argc, char** argv) {
 						break;
 					case 'b':
 						// acción B
+						break;
+					case 'c':
+						// acción C
 						break;
 					default:
 						break;
@@ -102,5 +121,6 @@ main(int argc, char** argv) {
 
 ## Carencias ##
 
-Esta librería carece de asignación automática a variables según la opción.
-Esta característica se implementará en un futuro.
+* Carencia asignación automática a variables según la opción.
+* No probada en entornos Windows.
+
