@@ -15,7 +15,7 @@ Es necesario tener `g++` versión 4.6 o superior y es compatible con C++03 (no
 ha sido probada a compilar con C++11).
 
 ```bash
-$ make debug
+diego@linux:~/projects/libcli++/src:$ make debug
 ```
 
 ## Instalación ##
@@ -37,7 +37,7 @@ Si la librería está correctamente instalada, basta con compilar la aplicación
 con el siguiente comando:
 
 ```bash
-$ g++ -o mi_aplicacion -L/usr/local/include -I/usr/local/lib *.cpp
+diego@linux:~/projects/libcli++/test:$ g++ -o mi_aplicacion -L/usr/local/include -I/usr/local/lib *.cpp
 ```
 
 ## Ejemplos de uso ##
@@ -75,9 +75,11 @@ main(int argc, char** argv) {
         om.option("print-name")
         	.alias("n")
         	.argument()
-        	.description("Imprime el nombre (se puede especificar).");
+        	.description("Imprime el nombre (se puede especificar el argumento pero no es requerido).");
         om.option("a", 'a')
-        	.description("Hace la cosa A.").argument().typeInteger();
+        	.description("Hace la cosa A.")
+        	.argument()
+        	.typeInteger();
         om.option("b", 'b')
         	.description("Hace la cosa B.");
         om.option("c", 'c')
