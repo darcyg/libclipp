@@ -1,12 +1,12 @@
 ToDo List para 'libcli++'
 ==============================================================================
 
-* Permitir opciones con caracteres comodÌn. Si no se encuentra una opciÛn,
-  mirar a ver si est· en la lista con comodines y ejecutar una funciÛn
-  predefinida para esa opciÛn.
+* Permitir opciones con caracteres comod√≠n. Si no se encuentra una opci√≥n,
+  mirar a ver si est√° en la lista con comodines y ejecutar una funci√≥n
+  predefinida para esa opci√≥n.
 
   Por ejemplo:
 
-  om.option("*").exec(&func);	// Cualquier opciÛn es v·lida.
-  om.option("%n").exec(&func2);	// Opciones numÈricas son v·lidas: -2, -3
+  om.option("*").exec(&func);	// Cualquier opci√≥n es v√°lida.
+  om.option("%n").exec(&func2);	// Opciones num√©ricas son v√°lidas: -2, -3
 
