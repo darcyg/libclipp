@@ -12,12 +12,12 @@ INCLUDEDIRNAME		:= cli++
 SVN_REVISION		:= $(shell svnversion .. | sed -e "s/[0-9]*://" -e "s/[MS]//")
 
 INCLUDEDIR		:= ../include
-INCLUDE			:= -I$(INCLUDEDIR) -I/usr/local/include
+INCLUDE			:= -I$(INCLUDEDIR) -I$(INCLUDEINSTALLDIR)
 LIBNAMEFLAGS	:= -Wl,-soname,$(SONAME)
 CXXFLAGS		:= -fPIC -Wall
 LIBS			:= 
 LIBDIR			:= ../lib
-SRCS			:= $(shell ls *.cpp)
+SRCS			:= $(shell find . -type f -name '*.cpp')
 OBJS			:= $(SRCS:%.cpp=%.o)
 VARS			:= -DOS_POSIX -DLIB_REVISION=$(SVN_REVISION)
 
@@ -26,15 +26,15 @@ all:
 	@echo " Please specify one of the next targets:"
 	@echo " - debug     : Generates the library in debug mode."
 	@echo " - release   : Generates an optimized library."
-	@echo " - install   : Installs generated library into '/usr/local/lib'."
-	@echo " - devinstall: Installs development files into '/usr/local/include'."
+	@echo " - install   : Installs generated library into '$(INSTALLDIR)'."
+	@echo " - devinstall: Installs development files into '$(INCLUDEINSTALLDIR)'."
 	@echo " - clean     : Cleans generated object files."
 	
 message:
 	@echo "Building project '$(PROJECT_NAME)'..."
 	
 %.o: %.cpp
-	@echo -n "Building file '$@' from '$<'..."
+	@echo -n "Building '$@'..."
 	@$(CXX) -c $(VARS) $(CXXFLAGS) $(INCLUDE) -o "$@" "$<"
 	@echo " OK"
 
