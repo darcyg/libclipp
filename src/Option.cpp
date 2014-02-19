@@ -6,10 +6,10 @@
  *      Author: Diego Lago <diego.lago.gonzalez@gmail.com>
  */
 
-#include <cli++/Option.hpp>
-#include <cli++/OptionDefinition.hpp>
-#include <cli++/Exceptions.hpp>
-#include <cli++/Utils.hpp>
+#include "../include/cli++/Option.hpp"
+#include "../include/cli++/OptionDefinition.hpp"
+#include "../include/cli++/Exceptions.hpp"
+#include "../include/cli++/Utils.hpp"
 
 namespace clipp {
 

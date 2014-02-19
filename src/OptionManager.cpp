@@ -11,9 +11,9 @@
 
 using std::stringstream;
 
-#include <cli++/Exceptions.hpp>
-#include <cli++/OptionManager.hpp>
-#include <cli++/Utils.hpp>
+#include "../include/cli++/Exceptions.hpp"
+#include "../include/cli++/OptionManager.hpp"
+#include "../include/cli++/Utils.hpp"
 
 namespace clipp {
 

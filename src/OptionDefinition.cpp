@@ -6,10 +6,10 @@
  *      Author: Diego Lago <diego.lago.gonzalez@gmail.com>
  */
 
-#include <cli++/Exceptions.hpp>
-#include <cli++/OptionDefinition.hpp>
-#include <cli++/Utils.hpp>
-#include <cli++/OptionManager.hpp>
+#include "../include/cli++/Exceptions.hpp"
+#include "../include/cli++/OptionDefinition.hpp"
+#include "../include/cli++/Utils.hpp"
+#include "../include/cli++/OptionManager.hpp"
 
 namespace clipp {
 
@@ -25,6 +25,7 @@ OptionDefinition::OptionDefinition(const OptionDefinition& od)
 	  fArgumentRequired(od.fArgumentRequired),
 	  fMultiple(od.fMultiple),
 	  fExclusive(od.fExclusive),
+	  fAllowNoPreffix(od.fAllowNoPreffix),
 	  fAlias(od.fAlias),
 	  fValidStrings(od.fValidStrings),
 	  fHasMinValue(false),
@@ -49,6 +50,7 @@ OptionDefinition::OptionDefinition(const string name, OptionType type, const str
 	  fArgumentRequired(false),
 	  fMultiple(false),
 	  fExclusive(false),
+	  fAllowNoPreffix(false),
 	  fAlias(),
 	  fValidStrings(),
 	  fHasMinValue(false),
@@ -76,6 +78,7 @@ OptionDefinition::OptionDefinition(int id, const string name, OptionType type, c
 	  fArgumentRequired(false),
 	  fMultiple(false),
 	  fExclusive(false),
+	  fAllowNoPreffix(false),
 	  fAlias(),
 	  fValidStrings(),
 	  fHasMinValue(false),
@@ -413,6 +416,17 @@ OptionDefinition::exclusive(bool exclusive) {
 bool
 OptionDefinition::isExclusive() const {
 	return fExclusive;
+}
+
+OptionDefinition&
+OptionDefinition::allowNoPreffix(bool allow) {
+	fAllowNoPreffix = allow;
+	return *this;
+}
+
+bool
+OptionDefinition::allowNoPreffix() const {
+	return fAllowNoPreffix;
 }
 
 void
