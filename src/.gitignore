@@ -1,3 +1,5 @@
 # Ignoring object files.
 *.o
+# Ignoring dependencies files.
+*.d
 
