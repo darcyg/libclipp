@@ -9,6 +9,9 @@
 #include <sstream>
 #include <iomanip>
 
+#include <iostream>
+using namespace std;
+
 using std::stringstream;
 
 #include "../include/cli++/Exceptions.hpp"
@@ -230,7 +233,7 @@ OptionManager::decodeLongOption(const string option, bool normalize) {
 		} else if(op.substr(0, consts::NegationPreffix.size()) == consts::NegationPreffix) {	// Comprobamos si la opción es la negada y si existe.
 			// TODO: No se soportan negadas con argumento.
 			// Puede que sea una opción negada. Veamos si existe una normal...
-			op = normalizeOption(op.substr(0, consts::NegationPreffix.size()), false);
+			op = op.substr(consts::NegationPreffix.size(), -1);
 			optdef = getOptionDefinition(op);
 			if(optdef != NULL) {
 				postProcessOption(optdef, op, true);
