@@ -25,6 +25,7 @@ const string	ShortOptionMarker			= "-";
 const string	LongOptionMarker			= "--";
 const char		OptionArgumentSeparator		= '=';
 const string	AliasSeparator				= "|";
+const string	NegationPreffix				= "no-";
 
 }	// namespace consts
 
@@ -203,22 +204,22 @@ OptionManager::decodeShortOption(const string option, bool normalize) {
 
 void
 OptionManager::decodeLongOption(const string option, bool normalize) {
-	string op = (normalize ? normalizeOption(option,false) : option);
+	string op = (normalize ? normalizeOption(option, false) : option);
 	OptionDefinition* optdef = getOptionDefinition(op);
 	if(optdef != NULL) {
 		// La opción existe.
 		postProcessOption(optdef, op);
 	} else {
-		// La opción no existe, pero puede que sea de la forma --option=argument
+		// La opción no existe, pero puede que sea de la forma --option=argument o una negada: --no-option
 		size_t position = option.find_first_of(consts::OptionArgumentSeparator);
 		if(position != string::npos) {
 			// La opción tiene el argumento de la forma --option=argument
-			string processedOption = normalizeOption(option.substr(0,position));
+			string processedOption = normalizeOption(option.substr(0, position));
 			string argument = option.substr(position + 1);
 			optdef = getOptionDefinition(processedOption);
 			if(optdef != NULL) {
 				if(optdef->hasArgument()) {
-					addOption(optdef,argument);
+					addOption(optdef, argument);
 				} else {
 					// La opción tiene argumento pero en realidad no lo lleva.
 					throw clipp::error::InvalidArgument("Invalid argument for option: --" + processedOption, processedOption);
@@ -226,22 +227,33 @@ OptionManager::decodeLongOption(const string option, bool normalize) {
 			} else {
 				throw clipp::error::InvalidOption("Invalid option: -" + processedOption, processedOption);
 			}
+		} else if(op.substr(0, consts::NegationPreffix.size()) == consts::NegationPreffix) {	// Comprobamos si la opción es la negada y si existe.
+			// TODO: No se soportan negadas con argumento.
+			// Puede que sea una opción negada. Veamos si existe una normal...
+			op = normalizeOption(op.substr(0, consts::NegationPreffix.size()), false);
+			optdef = getOptionDefinition(op);
+			if(optdef != NULL) {
+				postProcessOption(optdef, op, true);
+			} else {
+				// La opción es una opción negada pero no hay ninguna normal válida para esa negación.
+				throw clipp::error::InvalidOption("Invalid option: --" + consts::NegationPreffix + op, op);
+			}
 		} else {
-			// La opción no existe ni tiene el argumento de la forma --option=argument, así que...
+			// La opción no existe ni tiene el argumento de la forma --option=argument ni es una negada como --no-option así que...
 			throw clipp::error::InvalidOption("Invalid option: " + option, option);
 		}
 	}
 }
 
 void
-OptionManager::postProcessOption(const OptionDefinition* optdef, const string realOption) {
+OptionManager::postProcessOption(const OptionDefinition* optdef, const string realOption, bool isNegated) {
 	if(optdef->hasArgument()) {
 		// Si tiene argumentos...
 		if(optdef->isArgumentRequired()) {
 			if(remainRawOptions() > 0) {
 				// Pueden ser obligatorios...
 				if(!isOption(peekRawOption())) {
-					addOption(optdef,popRawOption());
+					addOption(optdef, popRawOption(), isNegated);
 				} else {
 					//throw clipp::error::RequiredArgument("Argument required for option: " + string(optdef->isShortOption() ? "-" : "--") + optdef->name() + " (" + realOption + ")", optdef->name());
 					throw clipp::error::RequiredArgument("Argument required for option: " + string(realOption.length() == 1 ? "-" : "--") + realOption, realOption);
@@ -254,20 +266,20 @@ OptionManager::postProcessOption(const OptionDefinition* optdef, const string re
 			if(remainRawOptions() > 0) {
 				// ...o pueden ser opcionales.
 				// Se añade la opción y el argumento en caso de que este no sea otra opción, ya que este argumento es opcional.
-				addOption(optdef, (isOption(peekRawOption()) ? "" : popRawOption()));
+				addOption(optdef, (isOption(peekRawOption()) ? "" : popRawOption()), isNegated);
 			} else {
 				// No hay más argumentos en la línea de comandos, así que se añade opción normal.
-				addOption(optdef);
+				addOption(optdef, "", isNegated);
 			}
 		}
 	} else {
 		// Si no tiene argumentos ni opcionales ni obligatorios, se añade directamente a las opciones.
-		addOption(optdef);
+		addOption(optdef, "", isNegated);
 	}
 }
 
 void
-OptionManager::addOption(const OptionDefinition* optdef, const string argument) {
+OptionManager::addOption(const OptionDefinition* optdef, const string argument, bool isNegated) {
 	string name = optdef->name();
 	if(hasOption(name)) {
 		if(optdef->isMultiple()) {
@@ -280,8 +292,9 @@ OptionManager::addOption(const OptionDefinition* optdef, const string argument) 
 			throw clipp::error::MultipleOption("Multiple option not allowed: " + string(optdef->isShortOption() ? "-" : "--") + name, name);
 		}
 	} else {
-		Option* option = new Option(name,argument);
+		Option* option = new Option(name, argument);
 		option->fOptdef = const_cast<OptionDefinition*>(optdef);
+		option->fIsNegated = isNegated;
 		fOptions[name] = option;
 		fOptionsList.push_back(option);	// en esta lista están ordenadas según la línea de comandos y duplicadas (son punteros).
 	}

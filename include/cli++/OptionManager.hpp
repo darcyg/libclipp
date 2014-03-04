@@ -235,8 +235,10 @@ class OptionManager {
 		 * @param OptionDefinition* od Definición de la opción.
 		 * @param string realOption Opción real que llegó en la línea de
 		 * comandos (por si es un alias).
+		 * @param bool isNegated True si la opción es la negada, false en otro
+		 * caso.
 		 */
-		void						postProcessOption(const OptionDefinition* optdef, const string realOption = string());
+		void						postProcessOption(const OptionDefinition* optdef, const string realOption = string(), bool isNegated = false);
 
 		/**
 		 * Añade una opción ya procesada. Si la opción ya existe, añade el
@@ -244,8 +246,9 @@ class OptionManager {
 		 *
 		 * @param string OptionDefinition* Definición de la opción.
 		 * @param string argument Argumento.
+		 * @param bool True si la opción es la negada, false en otro caso.
 		 */
-		void						addOption(const OptionDefinition* optdef, const string argument = string());
+		void						addOption(const OptionDefinition* optdef, const string argument = string(), bool isNegated = false);
 
 		/**
 		 * Procesa si están todas las opciones que tiene que estar.
