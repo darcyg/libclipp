@@ -62,6 +62,7 @@ class OptionDefinition {
 		bool				fArgumentRequired;	/// Si el argumento es obligatorio.
 		bool				fMultiple;			/// Si es múltiple.
 		bool				fExclusive;			/// Si es exclusiva.
+		bool				fAllowNoPreffix;	/// Si permite prefijo "no-" en opciones.
 		string				fAlias;				/// Si tiene un alias (sólo uno).
 		StringSet			fValidStrings;		/// Cadenas válidas para su argumento.
 		StringSet			fConflictsWith;		/// Opciones con las que tiene conflicto (no pueden estar juntas).
@@ -322,6 +323,16 @@ class OptionDefinition {
 		 */
 		OptionDefinition&	exclusive(bool exclusive = true);
 		bool				isExclusive() const;
+
+		/**
+		 * Permite opciones tal que --option y --no-option.
+		 *
+		 * @param bool allow True para permitir, false en otro caso.
+		 * @return OptionDefinition& *this
+		 * @return bool True si se permite el prefijo.
+		 */
+		OptionDefinition&	allowNoPreffix(bool allow = true);
+		bool				allowNoPreffix() const;
 
 		/**
 		 * Fija y devuelve el valor predeterminado de esta opción.
