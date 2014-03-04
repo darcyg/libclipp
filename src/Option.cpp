@@ -43,6 +43,11 @@ Option::name() const {
 	return fName;
 }
 
+bool
+Option::isNegated() const {
+	return fIsNegated;
+}
+
 const OptionDefinition*
 Option::optionDefinition() const {
 	return fOptdef;
