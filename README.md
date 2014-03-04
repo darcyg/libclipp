@@ -25,9 +25,9 @@ Una vez compilada la librería, se puede ejecutar el comando `make install` o
 forma manual, la librería debería ir en `/usr/local/lib` y los archivos de
 cabecera en `/usr/local/include`.
 
-Una vez instalada no hay que olvidar ejectuar `ldconfig`.
+Please, do not forget to run `ldconfig` after library installation.
 
-## Compilación de una aplicación haciendo uso de la librería ##
+## Using the library into your application ##
 
 Para utilizar esta librería en una aplicación, basta con incluir el directorio
 de los archivos de cabecera en la línea de compilación y añadir el parámetro
@@ -37,15 +37,15 @@ Si la librería está correctamente instalada, basta con compilar la aplicación
 con el siguiente comando:
 
 ```bash
-diego@linux:~/projects/libcli++/test:$ g++ -o mi_aplicacion -L/usr/local/include -I/usr/local/lib *.cpp
+diego@linux:~/projects/libcli++/test:$ g++ -o my_aplication -I/usr/local/include -L/usr/local/lib *.cpp
 ```
 
-## Ejemplos de uso ##
+## Examples ##
 
-Para usar la librería hay que incluir en el código fuente el archivo
-`<cli++/OptionManager.hpp>` y hacer uso del _namespace_ `clipp` (opcional).
+In order to use the library, you have to include the header file `<cli++/OptionManager.hpp>`
+and the `clipp` namespace (optional).
 
-En este ejemplo se pueden ver las características básicas de la librería.
+In this example, you can view the basics of this library:
 
 ```cpp
 #include <iostream>
@@ -65,47 +65,47 @@ main(int argc, char** argv) {
         om.usage("test [options]");
         om.option("help")
         	.exclusive()
-        	.description("Muestra esta pantalla de ayuda.");
+        	.description("Shows this help screen.");
         om.option("input-file")
         	.alias("i")
         	.multiple()
         	.required()
         	.argumentRequired()
-        	.description("Archivo de entrada.");
+        	.description("Input file.");
         om.option("print-name")
         	.alias("n")
         	.argument()
-        	.description("Imprime el nombre (se puede especificar el argumento pero no es requerido).");
+        	.description("Print the name (argument is not required).");
         om.option("a", 'a')
-        	.description("Hace la cosa A.")
+        	.description("Do A.")
         	.argument()
         	.typeInteger();
         om.option("b", 'b')
-        	.description("Hace la cosa B.");
+        	.description("Do B.");
         om.option("c", 'c')
-        	.description("Hace la cosa C.");
+        	.description("Do C.");
         om.option("verbose")
         	.alias("v")
         	.multiple()
-        	.description("Muestra más información en pantalla (se puede especificar varias veces).");
+        	.description("More verbose (it can be specified many times).");
         
         try {
         
 			om.process();
 			
-			// Se procesan las opciones. Se pueden procesar antes las opciones exclusivas.
-			// Para el proceso automático en bucle, las opciones tienen que tener ID.
+			// Options processing. Exclusive options can be processed before.
+			// For the automatic loop, options must have ID.
 			const clipp::Option* op = NULL;
 			while((op = fOptionManager->next()) != NULL) {
 				switch(op->id()) {
 					case 'a':
-						// acción A
+						// action A
 						break;
 					case 'b':
-						// acción B
+						// action B
 						break;
 					case 'c':
-						// acción C
+						// action C
 						break;
 					default:
 						break;
@@ -121,8 +121,7 @@ main(int argc, char** argv) {
 
 ```
 
-## Carencias ##
+## Lacks ##
 
-* Carencia asignación automática a variables según la opción.
-* No probada en entornos Windows.
+Please, [refer to enhancements into the issues](https://github.com/diegolagoglez/libclipp/issues?labels=enhancement&page=1&state=open).
 
