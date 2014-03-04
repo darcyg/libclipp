@@ -37,6 +37,7 @@ class Option {
 	private:
 		int					fId;			/// Id numérico de la opción.
 		string				fName;			/// Nombre de la opción.
+		bool				fIsNegated;		/// Indica si la opción es la negada (--option -> --no-option).
 		int					fOccurrences;	/// Número de veces que aparece.
 		Strings				fValues;		/// Valores de los argumentos, si hay.
 		OptionDefinition*	fOptdef;		/// Definición de opción donde está esta opción.
@@ -85,6 +86,13 @@ class Option {
 		 * @return string Nombre de la opción.
 		 */
 		const string			name() const;
+
+		/**
+		 * Devuelve si la opción es la negada (--no-option).
+		 * 
+		 * @return bool True si es la negada, false en otro caso.
+		 */
+		bool					isNegated() const;
 
 		/**
 		 * Devuelve la definición de opción donde está esta opción.
