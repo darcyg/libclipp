@@ -37,7 +37,7 @@ Si la librería está correctamente instalada, basta con compilar la aplicación
 con el siguiente comando:
 
 ```bash
-diego@linux:~/projects/libcli++/test:$ g++ -o my_aplication -L/usr/local/include -I/usr/local/lib *.cpp
+diego@linux:~/projects/libcli++/test:$ g++ -o my_aplication -I/usr/local/include -L/usr/local/lib *.cpp
 ```
 
 ## Examples ##
