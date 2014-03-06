@@ -34,7 +34,8 @@ OptionDefinition::OptionDefinition(const OptionDefinition& od)
 	  fMaxValue(0),
 	  fHasDefaultValue(od.fHasDefaultValue),
 	  fDefaultValue(od.fDefaultValue),
-	  fExecute(od.fExecute)
+	  fExecute(od.fExecute),
+	  fVar(NULL)
 {
 }
 
@@ -59,7 +60,8 @@ OptionDefinition::OptionDefinition(const string name, OptionType type, const str
 	  fMaxValue(0),
 	  fHasDefaultValue(false),
 	  fDefaultValue(),
-	  fExecute(NULL)
+	  fExecute(NULL),
+	  fVar(NULL)
 {
 	if(fName.empty()) {
 		throw clipp::error::Length("OptionDefinition: Name cannot be empty.");
@@ -87,7 +89,8 @@ OptionDefinition::OptionDefinition(int id, const string name, OptionType type, c
 	  fMaxValue(0),
 	  fHasDefaultValue(false),
 	  fDefaultValue(),
-	  fExecute(NULL)
+	  fExecute(NULL),
+	  fVar(NULL)
 {
 	if(fName.empty()) {
 		throw clipp::error::Length("OptionDefinition: Name cannot be empty.");
@@ -268,6 +271,53 @@ OptionDefinition&
 OptionDefinition::typeBool() {
 	fType = OptionDefinition::TypeBoolean;
 	return *this;
+}
+
+OptionDefinition&
+OptionDefinition::var(string* value) {
+	fType = OptionDefinition::TypeString;
+	fVar = value;
+	return *this;
+}
+
+OptionDefinition&
+OptionDefinition::var(char** value) {
+	fType = OptionDefinition::TypeString;
+	fVar = value;
+	return *this;
+}
+
+OptionDefinition&
+OptionDefinition::var(int* value) {
+	fType = OptionDefinition::TypeInteger;
+	fVar = value;
+	return *this;
+}
+
+OptionDefinition&
+OptionDefinition::var(float* value) {
+	fType = OptionDefinition::TypeFloat;
+	fVar = value;
+	return *this;
+}
+
+OptionDefinition&
+OptionDefinition::var(double* value) {
+	fType = OptionDefinition::TypeFloat;
+	fVar = value;
+	return *this;
+}
+
+OptionDefinition&
+OptionDefinition::var(bool* value) {
+	fType = OptionDefinition::TypeBoolean;
+	fVar = value;
+	return *this;
+}
+
+void*
+OptionDefinition::var() const {
+	return fVar;
 }
 
 OptionDefinition&
