@@ -277,42 +277,44 @@ OptionDefinition&
 OptionDefinition::var(string* value) {
 	fType = OptionDefinition::TypeString;
 	fVar = value;
-	return *this;
+	// Si se asigna una variable para modificar, el argumento es obligatorio.
+	// Lo mismo en el resto de métodos con el mismo nombre.
+	return argumentRequired();
 }
 
 OptionDefinition&
 OptionDefinition::var(char** value) {
 	fType = OptionDefinition::TypeString;
 	fVar = value;
-	return *this;
+	return argumentRequired();
 }
 
 OptionDefinition&
 OptionDefinition::var(int* value) {
 	fType = OptionDefinition::TypeInteger;
 	fVar = value;
-	return *this;
+	return argumentRequired();
 }
 
 OptionDefinition&
 OptionDefinition::var(float* value) {
 	fType = OptionDefinition::TypeFloat;
 	fVar = value;
-	return *this;
+	return argumentRequired();
 }
 
 OptionDefinition&
 OptionDefinition::var(double* value) {
 	fType = OptionDefinition::TypeFloat;
 	fVar = value;
-	return *this;
+	return argumentRequired();
 }
 
 OptionDefinition&
 OptionDefinition::var(bool* value) {
 	fType = OptionDefinition::TypeBoolean;
 	fVar = value;
-	return *this;
+	return argumentRequired();
 }
 
 void*
