@@ -2,7 +2,7 @@ libclipp (libcli++)
 ===================
 
 `libcli++` is a Linux library to manage command line interface. This is a
-library similar to 'getopt' but with more features.
+library similar to `getopt` but with more features. This is licensed under [LGPL v2.1](https://github.com/diegolagoglez/libclipp/blob/master/LICENSE).
 
 ## Compilation ##
 
