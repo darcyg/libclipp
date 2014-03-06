@@ -19,12 +19,13 @@ Option::Option(const string name, const string value)
 	: fId(0),
 	  fName(name),
 	  fOccurrences(1),
-	  fValues(MaxParameterCount),
+	  fValues(),
 	  fOptdef(NULL)
 {
 	if(fName.empty()) {
 		throw length_error("Option: Option name cannot be empty.");
 	}
+	fValues.reserve(MaxParameterCount);
 	if(!value.empty()) {
 		fValues.push_back(value);
 	}
