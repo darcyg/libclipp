@@ -34,6 +34,29 @@ Option::Option(const string name, const string value)
 Option::~Option() {
 }
 
+void
+Option::updateVariable() {
+	if(fOptdef->hasVar()) {
+		switch(fOptdef->type()) {
+			case OptionDefinition::TypeString:
+				*(fOptdef->var<string>()) = fValues[0];
+				break;
+			case OptionDefinition::TypeInteger:
+				*(fOptdef->var<int>()) = StringTo<int>(fValues[0], 0);
+				break;
+			case OptionDefinition::TypeFloat:
+				*(fOptdef->var<float>()) = StringTo<float>(fValues[0], 0.0);
+				break;
+			case OptionDefinition::TypeBoolean:
+				*(fOptdef->var<bool>()) = StringTo<bool>(fValues[0], false);
+				break;
+			case OptionDefinition::TypeNone:
+			default:
+				throw clipp::error::InvalidArgument("Cannot assign argument to variable: " + fValues[0]);
+		}
+	}
+}
+
 int
 Option::id() const {
 	return fId;

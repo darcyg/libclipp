@@ -269,6 +269,11 @@ class OptionManager {
 		void						processArguments() const;
 
 		/**
+		 * Actualiza las variables asignadas a cada opción.
+		 */
+		void						updateVariables();
+
+		/**
 		 * Ejecuta las funciones de las opciones (una por cada opción que
 		 * se fija en la definición).
 		 */

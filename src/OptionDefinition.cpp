@@ -322,6 +322,11 @@ OptionDefinition::var() const {
 	return fVar;
 }
 
+bool
+OptionDefinition::hasVar() const {
+	return fVar != NULL;
+}
+
 OptionDefinition&
 OptionDefinition::alias(const string alias) {
 	fAlias = alias;

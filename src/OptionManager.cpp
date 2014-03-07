@@ -361,6 +361,13 @@ OptionManager::processArguments() const {
 }
 
 void
+OptionManager::updateVariables() {
+	for(OptionMap::const_iterator it = fOptions.begin(); it != fOptions.end(); ++it) {
+		it->second->updateVariable();
+	}	
+}
+
+void
 OptionManager::executeFunctionsForOptions() const {
 	for(OptionMap::const_iterator it = fOptions.begin(); it != fOptions.end(); ++it) {
 		const OptionDefinition* od = it->second->optionDefinition();
@@ -420,6 +427,9 @@ OptionManager::process() {
 
 	// Procesamos los argumentos (el número correcto).
 	processArguments();
+
+	// Actualiza las variables (en caso de que haya).
+	updateVariables();
 
 	// Ejectua las funciones definidas para las opciones.
 	executeFunctionsForOptions();
