@@ -185,7 +185,7 @@ class OptionDefinition {
 		 * @return OptionDefinition& *this
 		 * @return OptionType Tipo de la opción.
 		 */
-		OptionDefinition&	type(OptionType ot = TypeString);
+		OptionDefinition&	type(OptionType ot);
 		OptionType			type() const;
 
 		/**
@@ -231,6 +231,11 @@ class OptionDefinition {
 		 */
 		template <typename T>
 		T*					var() const { return static_cast<T*>(var()); };
+
+		/**
+		 * Devuelve si tiene variable asignada o no.
+		 */
+		bool				hasVar() const;
 
 		/**
 		 * Fija un alias, comprueba que el alias existe y devuelve el alias.
