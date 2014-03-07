@@ -184,7 +184,7 @@ class OptionDefinition {
 		 * @return OptionDefinition& *this
 		 * @return OptionType Tipo de la opción.
 		 */
-		OptionDefinition&	type(OptionType ot = TypeString);
+		OptionDefinition&	type(OptionType ot);
 		OptionType			type() const;
 
 		/**
