@@ -18,23 +18,19 @@ diego@linux:~/projects/libcli++/src:$ make debug
 
 ## Instalation ##
 
-__TO BE TRANSLATED__
-
-Una vez compilada la librería, se puede ejecutar el comando `make install` o
-`make devinstall` para instalar dicha librería. Si se decide instalarla de
-forma manual, la librería debería ir en `/usr/local/lib` y los archivos de
-cabecera en `/usr/local/include`.
+In order to install the library, run `make install`. This will be installed under
+`/usr/local/lib`. If you want to install the development files, run `make devinstall`.
+The development files (C++ headers) will be installed under `/usr/local/include`.
 
 Please, do not forget to run `ldconfig` after library installation.
 
 ## Using the library into your application ##
 
-Para utilizar esta librería en una aplicación, basta con incluir el directorio
-de los archivos de cabecera en la línea de compilación y añadir el parámetro
-para que se enlace con la misma.
+To use this library into your own applications, you have to include the development
+files installation directory in your compiler flags and add an `#include` into your
+source files.
 
-Si la librería está correctamente instalada, basta con compilar la aplicación
-con el siguiente comando:
+If the library is correctly compiled and installed, you can compile your application with this command:
 
 ```bash
 diego@linux:~/projects/libcli++/test:$ g++ -o my_aplication -I/usr/local/include -L/usr/local/lib *.cpp
