@@ -22,7 +22,7 @@ LIBDIR				:= ../lib
 SRCS				:= $(shell find . -type f -name '*.cpp')
 OBJS				:= $(SRCS:%.cpp=%.o)
 DEPS				:= $(OBJS:%.o=%.d)
-VARS				:= -DOS_POSIX -DLIB_REVISION=$(SVN_REVISION) -DGIT_HASH=$(GIT_HASH)
+VARS				:= -DOS_POSIX -DGIT_HASH=$(GIT_HASH)
 OBJS_WILDCARD		:= *.o
 DEPS_WILDCARD		:= *.d
 
