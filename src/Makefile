@@ -35,45 +35,39 @@ all:
 	@echo " install    : Installs generated library into '$(INSTALLDIR)'."
 	@echo " devinstall : Installs development files into '$(INCLUDEINSTALLDIR)'."
 	@echo " clean      : Cleans generated object files."
-	
+
 message:
-	@echo "Building project '$(PROJECT_NAME)'..."
-	
+	@echo "  PROJECT $(PROJECT_NAME)"
+
 %.o: %.cpp
-	@echo -n "Building '$@'..."
+	@echo "  CC $@"
 	@$(CXX) -c $(VARS) $(CXXFLAGS) $(DEPS_FLAGS) $(INCLUDE) -o "$@" "$<"
-	@echo " OK"
 
 debug: CXXFLAGS := $(CXXFLAGS) -g3 -O0 -DDEBUG
 debug: message $(OBJS)
-	@echo -n "Generating debug library in '$(LIBDIR)/$(LIBNAME)'..."
+	@echo "  BIN DEBUG $(LIBDIR)/$(LIBNAME)"
 	@$(CXX) -shared $(VARS) $(CXXFLAGS) $(LIBS) $(LIBNAMEFLAGS) -o $(LIBDIR)/$(LIBNAME) *.o
 	@cd $(LIBDIR) && ln -sf $(LIBNAME) $(LINKERNAME) && ln -sf $(LIBNAME) $(SONAME)
-	@echo " OK" 
 
 release: CXXFLAGS := $(CXXFLAGS) -O3 -DRELEASE
 release: message $(OBJS)
-	@echo -n "Generating release library in '$(LIBDIR)/$(LIBNAME)'..."
+	@echo "  BIN RELEASE $(LIBDIR)/$(LIBNAME)"
 	@$(CXX) -shared $(VARS) $(CXXFLAGS) $(LIBS) $(LIBNAMEFLAGS) -o $(LIBDIR)/$(LIBNAME) *.o
 	@cd $(LIBDIR) && ln -sf $(LIBNAME) $(LINKERNAME) && ln -sf $(LIBNAME) $(SONAME)
-	@echo " OK"
 
 .PHONY: clean install devinstall debug release message
 
 install:
-	@echo -n "Installing library '$(LIBNAME)' in '$(INSTALLDIR)'..."
+	@echo '  INSTALL $(LIBNAME) @ $(INSTALLDIR)'
 	@install $(LIBDIR)/$(LIBNAME) $(INSTALLDIR)
 	@cd $(INSTALLDIR) && ln -sf $(LIBNAME) $(SONAME) && ln -sf $(LIBNAME) $(LINKERNAME)
-	@echo " OK"
-	
+
 devinstall: install
-	@echo -n "Installing development header files in '$(INCLUDEINSTALLDIR)/$(INCLUDEDIRNAME)'..."
+	@echo "  INSTALL DEV @ $(INCLUDEINSTALLDIR)/$(INCLUDEDIRNAME)"
 	@mkdir -p $(INCLUDEINSTALLDIR)/$(INCLUDEDIRNAME) && cp -r $(INCLUDEDIR)/$(INCLUDEDIRNAME)/* $(INCLUDEINSTALLDIR)/$(INCLUDEDIRNAME)
-	@echo " OK"
 
 clean:
-	@echo -n "Cleaning project '$(PROJECT_NAME)'..."
+	@echo "  CLEAN $(PROJECT_NAME)"
 	@rm -f $(LIBDIR)/$(LIBNAME) $(LIBDIR)/$(LINKERNAME) $(LIBDIR)/$(SONAME) $(OBJS_WILDCARD) $(DEPS_WILDCARD)
-	@echo " OK"
 
 -include $(DEPS)
