@@ -6,6 +6,8 @@
  *      Author: Diego Lago <diego.lago.gonzalez@gmail.com>
  */
 
+#include <algorithm>
+
 #include "../include/cli++/Exceptions.hpp"
 #include "../include/cli++/OptionDefinition.hpp"
 #include "../include/cli++/Utils.hpp"
@@ -108,6 +110,13 @@ OptionDefinition::checkExclusivity() const {
 	}
 }
 
+static bool
+is_bool(string value) {
+	std::transform(value.begin(), value.end(), value.begin(), ::tolower);
+	return value == "true" || value == "yes" || value == "on" || value == "1" || \
+		value == "false" || value == "no" || value == "off" || value == "0";
+}
+
 void
 OptionDefinition::checkArgumentType(const string argument) const {
 	const string indicator = (isLongOption() ? "--" : "-");
@@ -123,7 +132,7 @@ OptionDefinition::checkArgumentType(const string argument) const {
 			}
 			break;
 		case OptionDefinition::TypeBoolean:
-			if(!StringIs<bool>(argument)) {
+			if(!is_bool(argument)) {
 				throw clipp::error::InvalidArgument("Argument for option '" + indicator + fName + "' must be a boolean: " + argument, fName);
 			}
 			break;
