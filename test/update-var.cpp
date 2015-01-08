@@ -22,17 +22,19 @@ main(int argc, char** argv) {
 	om.option("bool").required().var(&bool_var).description("Update a boolean variable.");
 
 	try {
-		cout << "str_var  =" << str_var << endl;
-		cout << "int_var  =" << int_var << endl;
-		cout << "float_var=" << float_var << endl;
-		cout << "bool_var =" << bool_var << endl;
+		cout << "----before----:" << endl;
+		cout << "str_var  = " << str_var << endl;
+		cout << "int_var  = " << int_var << endl;
+		cout << "float_var= " << float_var << endl;
+		cout << "bool_var = " << std::boolalpha << bool_var << endl;
 		
 		om.process();
 
-		cout << "str_var  =" << str_var << endl;
-		cout << "int_var  =" << int_var << endl;
-		cout << "float_var=" << float_var << endl;
-		cout << "bool_var =" << bool_var << endl;
+		cout << "----after----:" << endl;
+		cout << "str_var  = " << str_var << endl;
+		cout << "int_var  = " << int_var << endl;
+		cout << "float_var= " << float_var << endl;
+		cout << "bool_var = " << std::boolalpha << bool_var << endl;
 		
 	} catch(clipp::error::InvalidOption& e) {
 		cerr << "ERROR: " << e.what() << endl;
