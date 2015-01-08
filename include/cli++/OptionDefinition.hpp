@@ -78,7 +78,7 @@ class OptionDefinition {
 		/**
 		 * Clase amiga que puede acceder a las propiedades de esta clase.
 		 */
-		friend class	OptionManager;
+		friend class		OptionManager;
 
 		/**
 		 * Si la opción es exclusiva no puede ser múltiple ni obligatoria.
@@ -86,12 +86,12 @@ class OptionDefinition {
 		 *
 		 * @throw OptionDefinitionException Si hay error en la opción.
 		 */
-		void			checkExclusivity() const;
+		void				checkExclusivity() const;
 
 		/**
 		 * Clase que puede acceder a las siguientes funciones privadas.
 		 */
-		friend class	Option;
+		friend class		Option;
 
 		/**
 		 * Comprueba el tipo de argumento.
@@ -99,7 +99,7 @@ class OptionDefinition {
 		 * @param string argument El argumento a comprobar.
 		 * @throw clipp::Exception En caso de fallo.
 		 */
-		void			checkArgumentType(const string argument) const;
+		void				checkArgumentType(const string argument) const;
 
 		/**
 		 * Comprueba el valor del argrumento (rango y valores de cadena).
@@ -107,8 +107,15 @@ class OptionDefinition {
 		 * @param string value Valor a comprobar.
 		 * @throw clipp::Exception En caso de fallo.
 		 */
-		void			checkArgumentValue(const string value) const;
+		void				checkArgumentValue(const string value) const;
 
+		/**
+		 * Asigna un puntero a una variable y su tipo.
+		 * 
+		 * @param void* value Puntero a la variable.
+		 * @param OptionType Tipo de la variable.
+		 * @return OptionDefinition& this
+		 */
 		OptionDefinition&	var(void* value, OptionType type);
 
 	public:
