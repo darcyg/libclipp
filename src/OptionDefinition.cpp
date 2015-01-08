@@ -6,6 +6,8 @@
  *      Author: Diego Lago <diego.lago.gonzalez@gmail.com>
  */
 
+#include <algorithm>
+
 #include "../include/cli++/Exceptions.hpp"
 #include "../include/cli++/OptionDefinition.hpp"
 #include "../include/cli++/Utils.hpp"
@@ -34,7 +36,8 @@ OptionDefinition::OptionDefinition(const OptionDefinition& od)
 	  fMaxValue(0),
 	  fHasDefaultValue(od.fHasDefaultValue),
 	  fDefaultValue(od.fDefaultValue),
-	  fExecute(od.fExecute)
+	  fExecute(od.fExecute),
+	  fVar(NULL)
 {
 }
 
@@ -59,7 +62,8 @@ OptionDefinition::OptionDefinition(const string name, OptionType type, const str
 	  fMaxValue(0),
 	  fHasDefaultValue(false),
 	  fDefaultValue(),
-	  fExecute(NULL)
+	  fExecute(NULL),
+	  fVar(NULL)
 {
 	if(fName.empty()) {
 		throw clipp::error::Length("OptionDefinition: Name cannot be empty.");
@@ -87,7 +91,8 @@ OptionDefinition::OptionDefinition(int id, const string name, OptionType type, c
 	  fMaxValue(0),
 	  fHasDefaultValue(false),
 	  fDefaultValue(),
-	  fExecute(NULL)
+	  fExecute(NULL),
+	  fVar(NULL)
 {
 	if(fName.empty()) {
 		throw clipp::error::Length("OptionDefinition: Name cannot be empty.");
@@ -105,6 +110,13 @@ OptionDefinition::checkExclusivity() const {
 	}
 }
 
+static bool
+is_bool(string value) {
+	std::transform(value.begin(), value.end(), value.begin(), ::tolower);
+	return value == "true" || value == "yes" || value == "on" || value == "1" || \
+		value == "false" || value == "no" || value == "off" || value == "0";
+}
+
 void
 OptionDefinition::checkArgumentType(const string argument) const {
 	const string indicator = (isLongOption() ? "--" : "-");
@@ -120,7 +132,7 @@ OptionDefinition::checkArgumentType(const string argument) const {
 			}
 			break;
 		case OptionDefinition::TypeBoolean:
-			if(!StringIs<bool>(argument)) {
+			if(!is_bool(argument)) {
 				throw clipp::error::InvalidArgument("Argument for option '" + indicator + fName + "' must be a boolean: " + argument, fName);
 			}
 			break;
@@ -178,6 +190,13 @@ OptionDefinition::checkArgumentValue(const string argument) const {
 			}
 		}
 	}
+}
+
+OptionDefinition&
+OptionDefinition::var(void* value, OptionType type) {
+	fType = type;
+	fVar = value;
+	return argumentRequired();
 }
 
 bool
@@ -268,6 +287,46 @@ OptionDefinition&
 OptionDefinition::typeBool() {
 	fType = OptionDefinition::TypeBoolean;
 	return *this;
+}
+
+OptionDefinition&
+OptionDefinition::var(string* value) {
+	return var(value, OptionDefinition::TypeString);
+}
+
+OptionDefinition&
+OptionDefinition::var(char** value) {
+	return var(value, OptionDefinition::TypeString);
+}
+
+OptionDefinition&
+OptionDefinition::var(int* value) {
+	return var(value, OptionDefinition::TypeInteger);
+}
+
+OptionDefinition&
+OptionDefinition::var(float* value) {
+	return var(value, OptionDefinition::TypeFloat);
+}
+
+/*OptionDefinition&
+OptionDefinition::var(double* value) {
+	return var(value, OptionDefinition::TypeFloat);
+}*/
+
+OptionDefinition&
+OptionDefinition::var(bool* value) {
+	return var(value, OptionDefinition::TypeBoolean);
+}
+
+void*
+OptionDefinition::var() const {
+	return fVar;
+}
+
+bool
+OptionDefinition::hasVar() const {
+	return fVar != NULL;
 }
 
 OptionDefinition&

@@ -6,6 +6,8 @@
  *      Author: Diego Lago <diego.lago.gonzalez@gmail.com>
  */
 
+#include <algorithm>
+
 #include "../include/cli++/Option.hpp"
 #include "../include/cli++/OptionDefinition.hpp"
 #include "../include/cli++/Exceptions.hpp"
@@ -15,22 +17,58 @@ namespace clipp {
 
 static const size_t		MaxParameterCount	= 65536;
 
+static bool
+to_bool(string value) {
+	std::transform(value.begin(), value.end(), value.begin(), ::tolower);
+	if (value == "true" || value == "yes" || value == "on" || value == "1") {
+		return true;
+	} else if (value == "false" || value == "no" || value == "off" || value == "0") {
+		return false;
+	} else {
+		throw clipp::error::InvalidArgument("Value is not a valid boolean: " + value);
+	}
+}
+
 Option::Option(const string name, const string value)
 	: fId(0),
 	  fName(name),
 	  fOccurrences(1),
-	  fValues(MaxParameterCount),
+	  fValues(),
 	  fOptdef(NULL)
 {
 	if(fName.empty()) {
 		throw length_error("Option: Option name cannot be empty.");
 	}
+	fValues.reserve(MaxParameterCount);
 	if(!value.empty()) {
 		fValues.push_back(value);
 	}
 }
 
 Option::~Option() {
+}
+
+void
+Option::updateVariable() {
+	if(fOptdef->hasVar()) {
+		switch(fOptdef->type()) {
+			case OptionDefinition::TypeString:
+				*(fOptdef->var<string>()) = fValues[0];
+				break;
+			case OptionDefinition::TypeInteger:
+				*(fOptdef->var<int>()) = StringTo<int>(fValues[0], 0);
+				break;
+			case OptionDefinition::TypeFloat:
+				*(fOptdef->var<float>()) = StringTo<float>(fValues[0], 0.0);
+				break;
+			case OptionDefinition::TypeBoolean:
+				*(fOptdef->var<bool>()) = to_bool(fValues[0]);
+				break;
+			case OptionDefinition::TypeNone:
+			default:
+				throw clipp::error::InvalidArgument("Cannot assign argument to variable: " + fValues[0]);
+		}
+	}
 }
 
 int

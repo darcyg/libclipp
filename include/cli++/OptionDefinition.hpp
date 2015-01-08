@@ -73,11 +73,12 @@ class OptionDefinition {
 		bool				fHasDefaultValue;	/// Indica si tiene valor predeterminado o no.
 		string				fDefaultValue;		/// Valor predeterminado de esta opción.
 		OnOptionProcessed	fExecute;			/// Función ejecutada cuando se analizan todas las opciones.
+		void*				fVar;				/// Pointer to variable to be updated.
 
 		/**
 		 * Clase amiga que puede acceder a las propiedades de esta clase.
 		 */
-		friend class	OptionManager;
+		friend class		OptionManager;
 
 		/**
 		 * Si la opción es exclusiva no puede ser múltiple ni obligatoria.
@@ -85,12 +86,12 @@ class OptionDefinition {
 		 *
 		 * @throw OptionDefinitionException Si hay error en la opción.
 		 */
-		void			checkExclusivity() const;
+		void				checkExclusivity() const;
 
 		/**
 		 * Clase que puede acceder a las siguientes funciones privadas.
 		 */
-		friend class	Option;
+		friend class		Option;
 
 		/**
 		 * Comprueba el tipo de argumento.
@@ -98,7 +99,7 @@ class OptionDefinition {
 		 * @param string argument El argumento a comprobar.
 		 * @throw clipp::Exception En caso de fallo.
 		 */
-		void			checkArgumentType(const string argument) const;
+		void				checkArgumentType(const string argument) const;
 
 		/**
 		 * Comprueba el valor del argrumento (rango y valores de cadena).
@@ -106,7 +107,16 @@ class OptionDefinition {
 		 * @param string value Valor a comprobar.
 		 * @throw clipp::Exception En caso de fallo.
 		 */
-		void			checkArgumentValue(const string value) const;
+		void				checkArgumentValue(const string value) const;
+
+		/**
+		 * Asigna un puntero a una variable y su tipo.
+		 * 
+		 * @param void* value Puntero a la variable.
+		 * @param OptionType Tipo de la variable.
+		 * @return OptionDefinition& this
+		 */
+		OptionDefinition&	var(void* value, OptionType type);
 
 	public:
 
@@ -205,6 +215,36 @@ class OptionDefinition {
 		OptionDefinition&	typeInteger();
 		OptionDefinition&	typeFloat();
 		OptionDefinition&	typeBool();
+
+		/**
+		 * Fija un puntero a la variable que será actualizada con esta opción.
+		 * 
+		 * @param [type]* Puntero a la variable.
+		 * @return OptionDefinition& *this
+		 */
+		OptionDefinition&	var(string* value);
+		OptionDefinition&	var(char** value);
+		OptionDefinition&	var(int* value);
+		OptionDefinition&	var(float* value);
+		// OptionDefinition&	var(double* value);
+		OptionDefinition&	var(bool* value);
+
+		/**
+		 * Devuelve el puntero a la variable a ser actualizada, pero no el tipo.
+		 */
+		void*				var() const;
+
+		/**
+		 * Devuelve un puntero a la variable a actualizar pero con un casting
+		 * hecho a su tipo (según la plantilla).
+		 */
+		template <typename T>
+		T*					var() const { return static_cast<T*>(var()); };
+
+		/**
+		 * Devuelve si tiene variable asignada o no.
+		 */
+		bool				hasVar() const;
 
 		/**
 		 * Fija un alias, comprueba que el alias existe y devuelve el alias.

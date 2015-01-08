@@ -57,6 +57,11 @@ class Option {
 		 */
 		friend class OptionManager;
 
+		/**
+		 * Actualiza la variable.
+		 */
+		void					updateVariable();
+
 	public:
 
 		/**
