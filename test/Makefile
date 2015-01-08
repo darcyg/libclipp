@@ -1,7 +1,7 @@
 
 all:
 	@echo -n "Building '$(file)'... " 
-	@g++ -g3 -O0 -o $(file) -I../include -L../Debug/ $(file).cpp -lcli++
+	@g++ -g3 -O0 -o $(file) -I../include -L../lib/ $(file).cpp -lcli++
 	@echo "done."
 	
 run: all
