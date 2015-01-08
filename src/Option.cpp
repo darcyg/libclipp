@@ -6,6 +6,8 @@
  *      Author: Diego Lago <diego.lago.gonzalez@gmail.com>
  */
 
+#include <algorithm>
+
 #include "../include/cli++/Option.hpp"
 #include "../include/cli++/OptionDefinition.hpp"
 #include "../include/cli++/Exceptions.hpp"
@@ -14,6 +16,18 @@
 namespace clipp {
 
 static const size_t		MaxParameterCount	= 65536;
+
+static bool
+to_bool(string value) {
+	std::transform(value.begin(), value.end(), value.begin(), ::tolower);
+	if (value == "true" || value == "yes" || value == "on" || value == "1") {
+		return true;
+	} else if (value == "false" || value == "no" || value == "off" || value == "0") {
+		return false;
+	} else {
+		throw clipp::error::InvalidArgument("Value is not a valid boolean: " + value);
+	}
+}
 
 Option::Option(const string name, const string value)
 	: fId(0),
@@ -48,7 +62,7 @@ Option::updateVariable() {
 				*(fOptdef->var<float>()) = StringTo<float>(fValues[0], 0.0);
 				break;
 			case OptionDefinition::TypeBoolean:
-				*(fOptdef->var<bool>()) = StringTo<bool>(fValues[0], false);
+				*(fOptdef->var<bool>()) = to_bool(fValues[0]);
 				break;
 			case OptionDefinition::TypeNone:
 			default:
