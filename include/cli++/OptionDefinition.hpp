@@ -109,6 +109,8 @@ class OptionDefinition {
 		 */
 		void			checkArgumentValue(const string value) const;
 
+		OptionDefinition&	var(void* value, OptionType type);
+
 	public:
 
 		/**

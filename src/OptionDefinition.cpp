@@ -183,6 +183,13 @@ OptionDefinition::checkArgumentValue(const string argument) const {
 	}
 }
 
+OptionDefinition&
+OptionDefinition::var(void* value, OptionType type) {
+	fType = type;
+	fVar = value;
+	return argumentRequired();
+}
+
 bool
 OptionDefinition::operator == (const OptionDefinition& od) const {
 	return this->fName == od.fName;
@@ -275,46 +282,32 @@ OptionDefinition::typeBool() {
 
 OptionDefinition&
 OptionDefinition::var(string* value) {
-	fType = OptionDefinition::TypeString;
-	fVar = value;
-	// Si se asigna una variable para modificar, el argumento es obligatorio.
-	// Lo mismo en el resto de métodos con el mismo nombre.
-	return argumentRequired();
+	return var(value, OptionDefinition::TypeString);
 }
 
 OptionDefinition&
 OptionDefinition::var(char** value) {
-	fType = OptionDefinition::TypeString;
-	fVar = value;
-	return argumentRequired();
+	return var(value, OptionDefinition::TypeString);
 }
 
 OptionDefinition&
 OptionDefinition::var(int* value) {
-	fType = OptionDefinition::TypeInteger;
-	fVar = value;
-	return argumentRequired();
+	return var(value, OptionDefinition::TypeInteger);
 }
 
 OptionDefinition&
 OptionDefinition::var(float* value) {
-	fType = OptionDefinition::TypeFloat;
-	fVar = value;
-	return argumentRequired();
+	return var(value, OptionDefinition::TypeFloat);
 }
 
 OptionDefinition&
 OptionDefinition::var(double* value) {
-	fType = OptionDefinition::TypeFloat;
-	fVar = value;
-	return argumentRequired();
+	return var(value, OptionDefinition::TypeFloat);
 }
 
 OptionDefinition&
 OptionDefinition::var(bool* value) {
-	fType = OptionDefinition::TypeBoolean;
-	fVar = value;
-	return argumentRequired();
+	return var(value, OptionDefinition::TypeBoolean);
 }
 
 void*
