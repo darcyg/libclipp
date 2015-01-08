@@ -226,7 +226,7 @@ class OptionDefinition {
 		OptionDefinition&	var(char** value);
 		OptionDefinition&	var(int* value);
 		OptionDefinition&	var(float* value);
-		OptionDefinition&	var(double* value);
+		// OptionDefinition&	var(double* value);
 		OptionDefinition&	var(bool* value);
 
 		/**

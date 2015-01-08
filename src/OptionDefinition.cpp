@@ -309,10 +309,10 @@ OptionDefinition::var(float* value) {
 	return var(value, OptionDefinition::TypeFloat);
 }
 
-OptionDefinition&
+/*OptionDefinition&
 OptionDefinition::var(double* value) {
 	return var(value, OptionDefinition::TypeFloat);
-}
+}*/
 
 OptionDefinition&
 OptionDefinition::var(bool* value) {
